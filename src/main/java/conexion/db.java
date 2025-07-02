@@ -12,7 +12,7 @@ public class db {
             // Leer variables de entorno desde Railway
             String host = System.getenv("MYSQLHOST"); // mysql.railway.internal
             String port = System.getenv("MYSQLPORT"); // 3306
-            String dbname = System.getenv("MYSQL_DATABASE"); // railway
+            String dbname = System.getenv("MYSQL_DATABASE"); // railway // mejora x2
             String user = System.getenv("MYSQLUSER"); // root
             String pass = System.getenv("MYSQLPASSWORD"); // JSqwrs...
 
