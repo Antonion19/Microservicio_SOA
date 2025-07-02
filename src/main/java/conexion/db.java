@@ -5,60 +5,37 @@ import java.sql.*;
 public class db {
     Connection con;
 
-    // Database connection parameters
-    // IMPORTANT: Make sure your database name is 'bdsoan' as specified
-    String url = "jdbc:mysql://localhost:3306/bdsoan";
-    String user = "root";
-    String pass = ""; // Often empty for default XAMPP/WAMP/MAMP root user without password
-
-    /**
-     * Establishes a connection to the database.
-     * @return A Connection object if successful, null otherwise.
-     */
     public Connection Conexion() {
         try {
-            // Load the MySQL JDBC Driver (explicitly for older JDBC versions, though often not strictly needed for modern drivers)
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // Establish the connection
+
+            // Leer variables de entorno desde Railway
+            String host = System.getenv("MYSQLHOST"); // mysql.railway.internal
+            String port = System.getenv("MYSQLPORT"); // 3306
+            String dbname = System.getenv("MYSQLDATABASE"); // railway
+            String user = System.getenv("MYSQLUSER"); // root
+            String pass = System.getenv("MYSQLPASSWORD"); // JSqwrs...
+
+            String url = "jdbc:mysql://" + host + ":" + port + "/" + dbname
+                         + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+
             con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Database connection established successfully.");
+            System.out.println("✅ Conexión exitosa a la base de datos en Railway.");
         } catch (ClassNotFoundException e) {
-            System.err.println("Error: MySQL JDBC Driver not found. Make sure the MySQL Connector/J JAR is in your project's libraries.");
+            System.err.println("❌ Driver MySQL no encontrado.");
             e.printStackTrace();
-            con = null; // Ensure con is null on failure
+            con = null;
         } catch (SQLException e) {
-            System.err.println("Error connecting to the database. Check your URL, username, and password.");
+            System.err.println("❌ Error al conectar a la base de datos.");
             System.err.println("SQL State: " + e.getSQLState());
-            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("Código de error: " + e.getErrorCode());
             e.printStackTrace();
-            con = null; // Ensure con is null on failure
+            con = null;
         } catch (Exception e) {
-            // Catch any other unexpected exceptions
-            System.err.println("An unexpected error occurred during database connection.");
+            System.err.println("❌ Excepción inesperada al conectar.");
             e.printStackTrace();
-            con = null; // Ensure con is null on failure
+            con = null;
         }
         return con;
-    }
-
-    /**
-     * Main method for testing the database connection.
-     * Run this directly to check if the connection works.
-     */
-    public static void main(String[] args) {
-        db conexion = new db();
-        Connection con = conexion.Conexion(); // Attempt to get a connection
-
-        if (con != null) {
-            System.out.println("Connection successful to database: " + conexion.url.split("/")[3]); // Extract database name for output
-            try {
-                con.close(); // Close the connection after successful test
-                System.out.println("Connection closed.");
-            } catch (SQLException e) {
-                System.err.println("Error closing connection: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Error: Could not establish a database connection. Check logs for details.");
-        }
     }
 }
