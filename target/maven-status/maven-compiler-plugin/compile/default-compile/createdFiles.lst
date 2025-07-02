@@ -1,0 +1,7 @@
+servicio\ApplicationConfig.class
+com\mycompany\consultaalumnos_mserv\resources\JakartaEE8Resource.class
+servicio\DatosAlumno.class
+servicio\ValidadorAlumnoService.class
+com\mycompany\consultaalumnos_mserv\JakartaRestConfiguration.class
+servicio\ValidadorAlumnoResource.class
+conexion\db.class
